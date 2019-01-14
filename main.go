@@ -13,34 +13,6 @@ import (
 	//"github.com/mongodb/mongo-go-driver/mongo"
 )
 
-type Response struct {
-    Version string `json:"version"`
-    Template *Template `json:"template,omitempty"`
-    Data *Data `json:"data,omitempty"`
-}
-
-type Template struct {
-    Outputs []Component `json:"outputs"`
-    //QuickReplies []QuickReply `json:"quicReplies,omitempty"`
-}
-
-type Component struct {
-    SimpleText *SimpleText `json:"simpleText,omitempty"`
-}
-
-type SimpleText struct {
-    Text string `json:"text"`
-}
-
-type Data struct {
-    Msg1 string `json:"msg1,omitempty"`
-    Msg2 string `json:"msg2,omitempty"`
-    Msg3 string `json:"msg3,omitempty"`
-    Msg4 string `json:"msg4,omitempty"`
-    Msg5 string `json:"msg5,omitempty"`
-}
-
-
 func main() {
 	// Echo instance
 	
@@ -52,10 +24,15 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
+    // Init
+    initQuiz()
+    
 	// Routes
 	e.GET("/", hello)
-	e.POST("/quiz", sendQuiz)
-	e.GET("/quiz", generateQuiz)
+	e.POST("/quiz", generateQuiz)
+	e.GET("/quiz", sendQuiz)
+	e.POST("/check", checkQuiz)
+	
 
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))
