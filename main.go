@@ -7,9 +7,10 @@ package main
 import (
     //"fmt"
     "net/http"
-    
     "github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	
+	//"github.com/mongodb/mongo-go-driver/mongo"
 )
 
 type Response struct {
@@ -32,11 +33,13 @@ type SimpleText struct {
 }
 
 type Data struct {
-    Body string `json:"body,omitempty"`
-    A string `json:"a,omitempty"`
-    B string `json:"b,omitempty"`
-    C string `json:"c,omitempty"`
+    Msg1 string `json:"msg1,omitempty"`
+    Msg2 string `json:"msg2,omitempty"`
+    Msg3 string `json:"msg3,omitempty"`
+    Msg4 string `json:"msg4,omitempty"`
+    Msg5 string `json:"msg5,omitempty"`
 }
+
 
 func main() {
 	// Echo instance
@@ -51,7 +54,8 @@ func main() {
 
 	// Routes
 	e.GET("/", hello)
-	e.POST("/quiz", quiz)
+	e.POST("/quiz", sendQuiz)
+	e.GET("/quiz", generateQuiz)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))
@@ -63,46 +67,3 @@ func hello(c echo.Context) error {
 }
 
 
-func quiz(c echo.Context) error {
-    /*
-    d := &Data {
-        Number: "1",
-        TotalNumber: "1",
-        Body: "test?",
-        A: "A!",
-        B: "B!",
-        C: "C!",
-    }
-    */
-    
-    /*
-    t := &Template {
-        Outputs: []Component{
-            Component {
-                &SimpleText {
-                    Text: "test!",
-                },
-            },
-        },
-    }
-    
-    r := &Response {
-        Version: "2.0",
-        Template: t,
-    }
-    */
-    
-    d := &Data {
-        Body: "test?",
-        A: "A!",
-        B: "B!",
-        C: "C!",
-    }
-    
-    r := &Response {
-        Version: "2.0",
-        Data: d,
-    }
-    
-    return c.JSON(http.StatusOK, r)
-}
