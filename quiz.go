@@ -33,44 +33,6 @@ type Quiz struct {
 */
 
 
-// 스킬 서버 -> 봇 서버
-type Response struct {
-    Version string `json:"version"`
-    Template *Template `json:"template,omitempty"`
-    Data *Data `json:"data,omitempty"`
-}
-
-type Template struct {
-    Outputs []Component `json:"outputs"`
-    //QuickReplies []QuickReply `json:"quicReplies,omitempty"`
-}
-
-type Component struct {
-    SimpleText *SimpleText `json:"simpleText,omitempty"`
-}
-
-type SimpleText struct {
-    Text string `json:"text"`
-}
-
-type Data struct {
-    Msg1 string `json:"msg1,omitempty"`
-    Msg2 string `json:"msg2,omitempty"`
-    Msg3 string `json:"msg3,omitempty"`
-    Msg4 string `json:"msg4,omitempty"`
-    Msg5 string `json:"msg5,omitempty"`
-}
-
-type Word struct {
-    Word string
-    Pos string
-    Meaning string
-    Examples []string
-}
-
-var lastWord = map[string]Word{}
-var lastSentence = map[string]string{}
-
 func initQuiz() {
     // 봇 실행시 초기화되어야 하는 부분
     //lastQuiz := map[string]Word{} // 여기서 초기화하면 안되더라
@@ -105,14 +67,14 @@ func sendQuiz(c echo.Context) error {
     }
     */
     
-    d := &Data {
+    d := &formats.Data {
         Msg1: "test?",
         Msg2: "A!",
         Msg3: "B!",
         Msg4: "C!",
     }
     
-    r := &Response {
+    r := &formats.Response {
         Version: "2.0",
         Data: d,
     }
@@ -144,7 +106,7 @@ func generateQuiz(c echo.Context) error {
 
     // Randomly select a word (단, pos가 비어있거나, 예문이 없는 경우는 제외)
     // 감탄사 등 고려해야 (TODO)
-    var answer Word
+    var answer formats.Word
     var question string
     
     for {
@@ -201,7 +163,7 @@ func generateQuiz(c echo.Context) error {
     
     // 정답과 같은 품사의 단어 1개 찾기 (4개 TODO)
     // 중복 방지 (TODO)
-    var others [5]Word
+    var others [5]formats.Word
     for i := 0; i < 4; i++ {
         count := 0
         
@@ -310,11 +272,11 @@ func generateQuiz(c echo.Context) error {
         question, others[0].Word, others[1].Word, others[2].Word, others[3].Word, others[4].Word,
     )
     
-    d := &Data {
+    d := &formats.Data {
         Msg1: quizMsg,
     }
     
-    r := &Response {
+    r := &formats.Response {
         Version: "2.0",
         Data: d,
     }
@@ -335,11 +297,11 @@ func checkQuiz(c echo.Context) error {
     answerMsg += lastWord[userId].Pos + "\n"
     answerMsg += lastWord[userId].Meaning
     
-    d := &Data {
+    d := &formats.Data {
         Msg1: answerMsg,
     }
     
-    r := &Response {
+    r := &formats.Response {
         Version: "2.0",
         Data: d,
     }

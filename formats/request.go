@@ -1,5 +1,6 @@
 package formats
 
+// 봇 서버 --> 스킬 서버
 type Request struct {
     UserRequest *UserRequest `json:"userRequest,omitempty"`
     Bot *Bot `json:"bot,omitempty"`
@@ -35,3 +36,9 @@ type User struct {
     Type string `json:"type,omitempty"`
     // properties TODO
 }
+
+
+
+
+
+
