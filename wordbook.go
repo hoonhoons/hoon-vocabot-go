@@ -9,22 +9,22 @@ import (
     
     "net/http"
     "github.com/labstack/echo"
-	//"github.com/labstack/echo/middleware"
-	
-	//"github.com/mongodb/mongo-go-driver/bson"
-	//"github.com/mongodb/mongo-go-driver/bson/primitive"
-	
-	"github.com/mongodb/mongo-go-driver/bson"
-	"github.com/mongodb/mongo-go-driver/mongo"
+    //"github.com/labstack/echo/middleware"
+    
+    //"github.com/mongodb/mongo-go-driver/bson"
+    //"github.com/mongodb/mongo-go-driver/bson/primitive"
+    
+    "github.com/mongodb/mongo-go-driver/bson"
+    "github.com/mongodb/mongo-go-driver/mongo"
 )
 
 func putWordToWordbook(c echo.Context) error {
     request := new(formats.Request)
-	c.Bind(&request)
-	userId := request.UserRequest.User.Id
-	wordId := lastWord[userId].ID // mongo
-	
-	// Connect
+    c.Bind(&request)
+    userId := request.UserRequest.User.Id
+    wordId := lastWord[userId].ID // mongo
+    
+    // Connect
     ctx, _ := context.WithTimeout(context.Background(), 30 * time.Second)
     client, err := mongo.Connect(ctx, "mongodb://localhost:27017")
 
@@ -46,11 +46,11 @@ func putWordToWordbook(c echo.Context) error {
         log.Fatal(err)
     }
     
-	d := &formats.Data {
+    d := &formats.Data {
         Msg1: "완료",
     }
     
-	r := &formats.Response {
+    r := &formats.Response {
         Version: "2.0",
         Data: d,
     }

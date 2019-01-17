@@ -16,10 +16,10 @@ import (
     
     "net/http"
     "github.com/labstack/echo"
-	//"github.com/labstack/echo/middleware"
-	
-	"github.com/mongodb/mongo-go-driver/bson"
-	"github.com/mongodb/mongo-go-driver/mongo"
+    //"github.com/labstack/echo/middleware"
+    
+    "github.com/mongodb/mongo-go-driver/bson"
+    "github.com/mongodb/mongo-go-driver/mongo"
 )
 
 /*
@@ -84,9 +84,9 @@ func sendQuiz(c echo.Context) error {
 
 func generateQuiz(c echo.Context) error {
     request := new(formats.Request)
-	c.Bind(&request)
-	userId := request.UserRequest.User.Id
-	
+    c.Bind(&request)
+    userId := request.UserRequest.User.Id
+    
     // Connect
     ctx, _ := context.WithTimeout(context.Background(), 30 * time.Second)
     client, err := mongo.Connect(ctx, "mongodb://localhost:27017")
@@ -116,14 +116,14 @@ func generateQuiz(c echo.Context) error {
         
         cur, err := teps.Aggregate(ctx, pipeline)
         if err != nil {
-        	log.Fatal(err)
+            log.Fatal(err)
         }
         
         defer cur.Close(ctx)
         for cur.Next(ctx) {
             err := cur.Decode(&answer)
             if err != nil {
-            	log.Fatal(err)
+                log.Fatal(err)
             }
         }
         
@@ -181,14 +181,14 @@ func generateQuiz(c echo.Context) error {
             
             cur, err := teps.Aggregate(ctx, pipeline)
             if err != nil {
-            	log.Fatal(err)
+                log.Fatal(err)
             }
             
             defer cur.Close(ctx)
             for cur.Next(ctx) {
                 err := cur.Decode(&others[i])
                 if err != nil {
-                	log.Fatal(err)
+                    log.Fatal(err)
                 }
             }
             
@@ -227,7 +227,7 @@ func generateQuiz(c echo.Context) error {
     cur, err := teps.Find(ctx, nil)
     if err != nil {
         fmt.Println("si...bal...")
-    	log.Fatal(err)
+        log.Fatal(err)
     }
     
     defer cur.Close(ctx)
@@ -235,9 +235,9 @@ func generateQuiz(c echo.Context) error {
         var result bson.M
         err := cur.Decode(&result)
         if err != nil {
-        	log.Fatal(err)
+            log.Fatal(err)
         }
-    	fmt.Println("hello")
+        fmt.Println("hello")
     }
     
     if err := cur.Err(); err != nil {
@@ -287,10 +287,10 @@ func generateQuiz(c echo.Context) error {
 
 func checkQuiz(c echo.Context) error {
     request := new(formats.Request)
-	c.Bind(&request)
-	userId := request.UserRequest.User.Id
-	
-	fmt.Println(userId) // debug
+    c.Bind(&request)
+    userId := request.UserRequest.User.Id
+    
+    fmt.Println(userId) // debug
     
     answerMsg := lastSentence[userId] + "\n\n"
     answerMsg += "'" + lastWord[userId].Word + "'\n"
